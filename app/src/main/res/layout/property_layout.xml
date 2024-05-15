@@ -20,7 +20,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,28 +32,26 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView4"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_margin="@dimen/_5sdp"
-                    app:srcCompat="@drawable/wind" />
+                    app:srcCompat="@drawable/wind"
+                    android:contentDescription="@string/wind" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/wind"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/russo_one"
-                    android:text="10 m/s"
                     android:textColor="?attr/colorPrimaryText"
                     android:textSize="@dimen/_10sdp"
                     tools:ignore="SpUsage" />
 
                 <TextView
-                    android:id="@+id/textView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bai_jamjuree_regular"
-                    android:text="Wind"
+                    android:text="@string/wind"
                     android:textColor="?attr/colorSecondaryText"
                     android:textSize="@dimen/_9sdp"
                     tools:ignore="SpUsage" />
@@ -67,28 +66,26 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView2"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_margin="@dimen/_5sdp"
-                    app:srcCompat="@drawable/humidity" />
+                    app:srcCompat="@drawable/humidity"
+                    android:contentDescription="@string/humidity" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/humidity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/russo_one"
-                    android:text="10%"
                     android:textColor="?attr/colorPrimaryText"
                     android:textSize="@dimen/_10sdp"
                     tools:ignore="SpUsage" />
 
                 <TextView
-                    android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bai_jamjuree_regular"
-                    android:text="Humidity"
+                    android:text="@string/humidity"
                     android:textColor="?attr/colorSecondaryText"
                     android:textSize="@dimen/_9sdp"
                     tools:ignore="SpUsage" />
@@ -103,28 +100,26 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_margin="@dimen/_5sdp"
-                    app:srcCompat="@drawable/umbrella" />
+                    app:srcCompat="@drawable/umbrella"
+                    android:contentDescription="@string/rain" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/rain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/russo_one"
-                    android:text="100%"
                     android:textColor="?attr/colorPrimaryText"
                     android:textSize="@dimen/_10sdp"
                     tools:ignore="SpUsage" />
 
                 <TextView
-                    android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bai_jamjuree_regular"
-                    android:text="Rain"
+                    android:text="@string/rain"
                     android:textColor="?attr/colorSecondaryText"
                     android:textSize="@dimen/_9sdp"
                     tools:ignore="SpUsage" />
