@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.InsightToday" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/purple_200</item>-->
+<!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
+<!--        <item name="colorOnPrimary">@color/black</item>-->
+<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
+<!--        <item name="colorSecondary">@color/teal_200</item>-->
+<!--        <item name="colorSecondaryVariant">@color/teal_200</item>-->
+<!--        <item name="colorOnSecondary">@color/black</item>-->
+
+        <!-- Status bar color. -->
+<!--        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>-->
+        <!-- Customize your theme here. -->
+
+
+        <item name="colorPrimaryText">@color/PrimaryTextD</item>
+        <item name="colorSecondaryText">@color/SecondaryTextD</item>
+        <item name="colorDisabledText">@color/DisabledTextD</item>
+
+        <item name="colorCardBackground">@color/PrimaryTextL</item>
+        <item name="colorDivider">@color/SecondaryTextD</item>
+
+        <item name="colorButton">@color/PrimaryTextL</item>
+    </style>
+</resources>
