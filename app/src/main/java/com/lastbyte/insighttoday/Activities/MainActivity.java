@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,16 +25,20 @@ import com.lastbyte.insighttoday.Adapters.FavouriteAdapter;
 import com.lastbyte.insighttoday.AsyncRunner.Network;
 import com.lastbyte.insighttoday.Listeners.FavouriteListener;
 import com.lastbyte.insighttoday.Listeners.NetworkListener;
+import com.lastbyte.insighttoday.Listeners.WeatherChangeListener;
 import com.lastbyte.insighttoday.Models.FavouriteModel;
 import com.lastbyte.insighttoday.Models.WeatherModel;
 import com.lastbyte.insighttoday.R;
+import com.lastbyte.insighttoday.Singletons.InsightToday;
 import com.lastbyte.insighttoday.Utils.Icons;
 import com.lastbyte.insighttoday.Utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements FavouriteListener {
+public class MainActivity extends AppCompatActivity implements FavouriteListener, WeatherChangeListener, TextView.OnEditorActionListener, View.OnClickListener, NetworkListener.Weather {
+
+    private InsightToday insightToday;
     
 //    WEATHER_LAYOUT
     private TextView city;
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
     private TextView temperature;
     private TextView weather;
     private ImageButton backButton;
+    private Button favActionBtn;
     
 //    PROPERTY_LAYOUT
     private TextView wind ;
@@ -67,12 +73,15 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
             return insets;
         });
 
+        insightToday = InsightToday.getInstance();
+
         city = findViewById(R.id.city);
         icon = findViewById(R.id.icon);
-        temperature = findViewById(R.id.temperature);
         weather = findViewById(R.id.weather);
         calendar = findViewById(R.id.calendar);
         backButton = findViewById(R.id.backButton);
+        temperature = findViewById(R.id.temperature);
+        favActionBtn = findViewById(R.id.favActionBtn);
         
         wind = findViewById(R.id.wind);
         rain = findViewById(R.id.rain);
@@ -86,17 +95,18 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
         favouriteAdapter = new FavouriteAdapter(favouriteModelList, this);
         favouriteRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
         favouriteRecyclerView.setAdapter(favouriteAdapter);
-        
-//
-//        for (int i=0; i<10; i++) {
-//            favouriteModelList.add(new FavouriteModel("City "+i, "Weather "+i, 20.02376, 1000));
-//            favouriteAdapter.notifyDataSetChanged();
-//        }
 
-        new Network(this, "Delhi", new NetworkListener.Weather() {
-            @Override
-            public void onWeatherResponse(WeatherModel weatherModel) {setData(weatherModel);}
-        }).execute();
+
+        for (int i=0; i<10; i++) {
+            favouriteModelList.add(new FavouriteModel("City "+i, "Weather "+i, 20.02376, 1000));
+            favouriteAdapter.notifyDataSetChanged();
+        }
+
+        setData(insightToday.getWeatherData());
+        setWeatherChangeListener();
+        searchBox.setOnEditorActionListener(this);
+        backButton.setOnClickListener(this);
+        clearSearchButton.setOnClickListener(this);
 
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,34 +124,22 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
 
             }
         });
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Utils.hideKeyboard(MainActivity.this);
-                    searchBox.clearFocus();
-                    return true;
-                }
-                return false;
-            }
-        });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    }
 
-            }
-        });
+    private void setWeatherChangeListener() {
+        insightToday.setWeatherChangeListener(this);
+        favActionBtn.setVisibility(View.GONE);
+    }
 
-        backButton.setOnClickListener(v -> {
-            v.setVisibility(View.GONE);
-        });
-        clearSearchButton.setOnClickListener(v -> {
-            searchBox.setText("");
-            Utils.hideKeyboard(this);
-            searchBox.clearFocus();
-            v.setVisibility(View.GONE);
-        });
+    private void changeFavButton(String btnMsg) {
+        favActionBtn.setText(String.format("%s", btnMsg));
+        favActionBtn.setVisibility(View.VISIBLE);
+    }
+
+    private void clearSearchBox() {
+        Utils.hideKeyboard(this);
+        searchBox.clearFocus();
     }
 
     @SuppressLint("DefaultLocale")
@@ -159,7 +157,46 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
     
     @Override
     public void onFavouriteItemClicked(int position) {
+        changeFavButton("Remove From Fav");
         backButton.setVisibility(View.VISIBLE);
     }
-    
+
+    @Override
+    public void onWeatherChanged(WeatherModel weather) {
+        setData(weather);
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            clearSearchBox();
+            if (searchBox.getText().toString().isEmpty()) {
+                setWeatherChangeListener();
+                return true;
+            }
+            insightToday.removeWeatherChangeListener();
+            new Network(MainActivity.this, searchBox.getText().toString(), this).execute();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == backButton.getId()) {
+            v.setVisibility(View.GONE);
+        } else if (v.getId() == clearSearchButton.getId()) {
+            searchBox.setText("");
+            clearSearchBox();
+            v.setVisibility(View.GONE);
+        }
+        setWeatherChangeListener();
+    }
+
+    @Override
+    public void onWeatherResponse(WeatherModel weatherModel) {
+        changeFavButton("Add To Fav");
+        setData(weatherModel);
+    }
 }

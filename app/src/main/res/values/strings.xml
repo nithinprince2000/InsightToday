@@ -4,4 +4,9 @@
     <string name="wind">Wind</string>
     <string name="humidity">Humidity</string>
     <string name="rain">Rain</string>
+    <string name="cancel">Cancel</string>
+    <string name="action_settings">Open</string>
+    <string name="GPSAlertDialogTitle">Alert GPS</string>
+    <string name="GPSAlertDialogMessage">Turn on GPS from settings to continue.</string>
+    <string name="weather_icon">Weather Icon</string>
 </resources>
