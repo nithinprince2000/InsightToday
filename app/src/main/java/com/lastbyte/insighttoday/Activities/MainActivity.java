@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements
 
         city = findViewById(R.id.city);
         icon = findViewById(R.id.icon);
-        weather = findViewById(R.id.weather);
+        weather = findViewById(R.id.weather); weather.setSelected(true);
         calendar = findViewById(R.id.calendar);
         backButton = findViewById(R.id.backButton);
         temperature = findViewById(R.id.temperature);
