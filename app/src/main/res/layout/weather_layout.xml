@@ -10,7 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/favActionBtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -18,19 +18,25 @@
             android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingEnd="@dimen/_5sdp"
             android:fontFamily="@font/russo_one"
             android:textColor="?attr/colorPrimaryText"
             android:textSize="@dimen/_20sdp"
-            tools:ignore="SpUsage" />
+            tools:ignore="RtlSymmetry,SpUsage" />
 
         <TextView
             android:id="@+id/calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingEnd="@dimen/_10sdp"
             android:fontFamily="@font/bai_jamjuree_regular"
             android:textColor="?attr/colorSecondaryText"
             android:textSize="@dimen/_12sdp"
-            tools:ignore="SpUsage" />
+            tools:ignore="RtlSymmetry,SpUsage" />
     </LinearLayout>
 
     <LinearLayout
@@ -126,7 +132,7 @@
         android:textColor="?attr/colorSecondaryText"
         android:textSize="@dimen/_9sdp"
         app:backgroundTint="@null"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toStartOf="@+id/backButton"
         app:layout_constraintTop_toTopOf="@+id/linearLayout"
@@ -137,13 +143,13 @@
         android:layout_width="@dimen/_20sdp"
         android:layout_height="@dimen/_20sdp"
         android:background="@drawable/button_bg"
+        android:contentDescription="@string/back_button"
         android:paddingEnd="@dimen/_1sdp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/favActionBtn"
-        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/favActionBtn"
         app:srcCompat="@drawable/ic_arrow_back"
-        tools:ignore="RtlSymmetry"
-        android:contentDescription="@string/back_button" />
+        tools:ignore="RtlSymmetry" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
