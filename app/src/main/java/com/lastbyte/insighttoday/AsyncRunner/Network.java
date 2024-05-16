@@ -18,6 +18,10 @@ import com.lastbyte.insighttoday.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class Network extends AsyncTask<Void, Void, Void> {
 
     private Context context;
@@ -52,14 +56,21 @@ public class Network extends AsyncTask<Void, Void, Void> {
 
                             networkListener.onWeatherResponse(weatherModel);
 
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT).show();
+                String body = "Unidentified Error";
+                try {
+                    body = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                    JSONObject jsonRes = new JSONObject(body);
+                    Toast.makeText(context, jsonRes.getJSONObject("error").getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(context, body, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         queue.add(stringRequest);

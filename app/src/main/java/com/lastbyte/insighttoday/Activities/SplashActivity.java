@@ -75,7 +75,8 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
                         splashMessage.setText(String.format("%s", "Getting Weather Data."));
-                        new Network(SplashActivity.this, String.format("%f,%f", location.getLatitude(), location.getLongitude()), new NetworkListener.Weather() {
+                        insightToday.setLocation(String.format("%f,%f", location.getLatitude(), location.getLongitude()));
+                        new Network(SplashActivity.this, insightToday.getLocation(), new NetworkListener.Weather() {
                             @Override
                             public void onWeatherResponse(WeatherModel weatherModel) {
                                 insightToday.setWeatherData(weatherModel);

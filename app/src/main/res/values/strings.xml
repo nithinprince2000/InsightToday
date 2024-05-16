@@ -9,4 +9,5 @@
     <string name="GPSAlertDialogTitle">Alert GPS</string>
     <string name="GPSAlertDialogMessage">Turn on GPS from settings to continue.</string>
     <string name="weather_icon">Weather Icon</string>
+    <string name="back_button">Back Button</string>
 </resources>

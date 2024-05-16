@@ -7,13 +7,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_5sdp"
         android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/bai_jamjuree_semi_bold"
-            android:text="London"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="?attr/colorPrimaryText"
             android:textSize="@dimen/_10sdp"
             tools:ignore="SpUsage" />
@@ -33,11 +36,23 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/bai_jamjuree_regular"
             android:includeFontPadding="false"
-            android:text="Sunny"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="?attr/colorSecondaryText"
             android:textSize="@dimen/_9sdp"
             tools:ignore="SpUsage" />
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/temperature"
@@ -45,21 +60,18 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/bai_jamjuree_bold"
         android:gravity="center"
-        android:text="20&#176;"
         android:textColor="?attr/colorPrimaryText"
         android:textSize="@dimen/_12sdp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
-        app:layout_constraintEnd_toStartOf="@+id/weatherImage"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout3"
+        app:layout_constraintStart_toEndOf="@+id/divider2"
         tools:ignore="SpUsage" />
 
     <ImageView
         android:id="@+id/weatherImage"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/temperature"
-        app:srcCompat="@drawable/sunny" />
+        app:layout_constraintTop_toTopOf="@+id/temperature" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

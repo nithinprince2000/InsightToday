@@ -7,6 +7,7 @@ public class InsightToday {
 
     private static InsightToday instance;
 
+    private String location;
     private WeatherModel weatherData;
     private WeatherChangeListener weatherChangeListener;
 
@@ -37,5 +38,13 @@ public class InsightToday {
 
     public void removeWeatherChangeListener() {
         instance.weatherChangeListener = null;
+    }
+
+    public String getLocation() {
+        return instance.location;
+    }
+
+    public void setLocation(String location) {
+        instance.location = location;
     }
 }

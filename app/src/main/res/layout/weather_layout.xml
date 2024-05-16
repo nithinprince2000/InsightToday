@@ -35,13 +35,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/divider4"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
@@ -51,6 +53,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/russo_one"
             android:includeFontPadding="false"
+            android:maxLines="1"
             android:textColor="?attr/colorPrimaryText"
             android:textSize="@dimen/_80sdp"
             tools:ignore="SpUsage" />
@@ -59,8 +62,10 @@
             android:id="@+id/weather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:fontFamily="@font/bai_jamjuree_regular"
             android:includeFontPadding="false"
+            android:maxLines="1"
             android:textColor="?attr/colorSecondaryText"
             android:textSize="@dimen/_12sdp"
             tools:ignore="SpUsage" />
@@ -71,14 +76,37 @@
         android:id="@+id/icon"
         android:layout_width="@dimen/_80sdp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginStart="@dimen/_15sdp"
         android:layout_marginEnd="@dimen/_15sdp"
+        android:contentDescription="@string/weather_icon"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout2"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout2"
-        android:contentDescription="@string/weather_icon" />
+        app:layout_constraintStart_toEndOf="@+id/divider4"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
 
+
+    <View
+        android:id="@+id/divider3"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <View
+        android:id="@+id/divider4"
+        android:layout_width="1dp"
+        android:layout_height="1dp"
+        android:layout_marginEnd="@dimen/_80sdp"
+        android:background="?android:attr/listDivider"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider3"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <Button
         android:id="@+id/favActionBtn"
@@ -91,7 +119,6 @@
         android:includeFontPadding="false"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        android:text="Add To Favourite"
         android:textAllCaps="false"
         android:textColor="?attr/colorSecondaryText"
         android:textSize="@dimen/_9sdp"
@@ -113,6 +140,7 @@
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="@+id/favActionBtn"
         app:srcCompat="@drawable/ic_arrow_back"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlSymmetry"
+        android:contentDescription="@string/back_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

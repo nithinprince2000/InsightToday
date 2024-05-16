@@ -12,17 +12,20 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.lastbyte.insighttoday.Adapters.FavouriteAdapter;
 import com.lastbyte.insighttoday.AsyncRunner.Network;
+import com.lastbyte.insighttoday.Database.Favourite;
 import com.lastbyte.insighttoday.Listeners.FavouriteListener;
 import com.lastbyte.insighttoday.Listeners.NetworkListener;
 import com.lastbyte.insighttoday.Listeners.WeatherChangeListener;
@@ -33,10 +36,9 @@ import com.lastbyte.insighttoday.Singletons.InsightToday;
 import com.lastbyte.insighttoday.Utils.Icons;
 import com.lastbyte.insighttoday.Utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements FavouriteListener, WeatherChangeListener, TextView.OnEditorActionListener, View.OnClickListener, NetworkListener.Weather {
+public class MainActivity extends AppCompatActivity implements
+        FavouriteListener, WeatherChangeListener,
+        TextView.OnEditorActionListener, View.OnClickListener, NetworkListener.Weather {
 
     private InsightToday insightToday;
     
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
     private ImageButton clearSearchButton;
     private RecyclerView favouriteRecyclerView;
     private FavouriteAdapter favouriteAdapter;
-    private List<FavouriteModel> favouriteModelList;
+    private FavouriteModel favouriteModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,21 +93,19 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
         clearSearchButton = findViewById(R.id.clearSearchButton);
         favouriteRecyclerView = findViewById(R.id.favouriteRecyclerView);
 
-        favouriteModelList = new ArrayList<>();
-        favouriteAdapter = new FavouriteAdapter(favouriteModelList, this);
+
+        favouriteModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(FavouriteModel.class);
         favouriteRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this, RecyclerView.VERTICAL, false));
-        favouriteRecyclerView.setAdapter(favouriteAdapter);
-
-
-        for (int i=0; i<10; i++) {
-            favouriteModelList.add(new FavouriteModel("City "+i, "Weather "+i, 20.02376, 1000));
-            favouriteAdapter.notifyDataSetChanged();
-        }
+        favouriteModel.getAllFavourites().observe(this, favourites -> {
+            favouriteAdapter = new FavouriteAdapter(favourites, MainActivity.this);
+            favouriteRecyclerView.setAdapter(favouriteAdapter);
+        });
 
         setData(insightToday.getWeatherData());
         setWeatherChangeListener();
         searchBox.setOnEditorActionListener(this);
         backButton.setOnClickListener(this);
+        favActionBtn.setOnClickListener(this);
         clearSearchButton.setOnClickListener(this);
 
         searchBox.addTextChangedListener(new TextWatcher() {
@@ -137,9 +137,15 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
         favActionBtn.setVisibility(View.VISIBLE);
     }
 
-    private void clearSearchBox() {
+    private void removeFocus() {
         Utils.hideKeyboard(this);
         searchBox.clearFocus();
+    }
+
+    private void clearSearchBox() {
+        searchBox.setText("");
+        removeFocus();
+        clearSearchButton.setVisibility(View.GONE);
     }
 
     @SuppressLint("DefaultLocale")
@@ -156,7 +162,9 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
     }
     
     @Override
-    public void onFavouriteItemClicked(int position) {
+    public void onFavouriteItemClicked(WeatherModel weather) {
+        insightToday.removeWeatherChangeListener();
+        setData(weather);
         changeFavButton("Remove From Fav");
         backButton.setVisibility(View.VISIBLE);
     }
@@ -170,7 +178,8 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 
         if (actionId == EditorInfo.IME_ACTION_DONE) {
-            clearSearchBox();
+            removeFocus();
+            backButton.setVisibility(View.GONE);
             if (searchBox.getText().toString().isEmpty()) {
                 setWeatherChangeListener();
                 return true;
@@ -184,13 +193,17 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == backButton.getId()) {
-            v.setVisibility(View.GONE);
-        } else if (v.getId() == clearSearchButton.getId()) {
-            searchBox.setText("");
+        if (v.getId() == clearSearchButton.getId()) {
             clearSearchBox();
-            v.setVisibility(View.GONE);
+        } else if (v.getId() == favActionBtn.getId()) {
+            clearSearchBox();
+            if (favActionBtn.getText().toString().contains("Add"))
+                favouriteModel.addToFavourites(new Favourite(city.getText().toString()));
+            else if (favActionBtn.getText().toString().contains("Remove")) {
+                favouriteModel.removeFavourite(new Favourite(city.getText().toString()));
+            }
         }
+        backButton.setVisibility(View.GONE);
         setWeatherChangeListener();
     }
 
@@ -198,5 +211,12 @@ public class MainActivity extends AppCompatActivity implements FavouriteListener
     public void onWeatherResponse(WeatherModel weatherModel) {
         changeFavButton("Add To Fav");
         setData(weatherModel);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        System.exit(0);
+        super.onBackPressed();
     }
 }
